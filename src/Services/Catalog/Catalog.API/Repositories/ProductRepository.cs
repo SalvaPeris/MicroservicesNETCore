@@ -13,7 +13,7 @@ namespace Catalog.API.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        
+         
         public async Task<Product> GetProduct(string id)
         {
             return await _context
