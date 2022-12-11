@@ -1,2 +1,3 @@
 # MicroservicesNETCore
-Proyecto de tienda realizada con microservicios
+UNDER DEVELOPMENT
+eShop done with microservices with NET Core.
