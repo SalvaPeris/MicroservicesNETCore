@@ -22,16 +22,6 @@ namespace Catalog.API.Repositories
                         .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetProductByName(string name)
-        {
-            FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Name, name);
-
-            return await _context
-                        .Products
-                        .Find(filter)
-                        .ToListAsync();
-        }
-
         public async Task<IEnumerable<Product>> GetProducts()
         {
             return await _context

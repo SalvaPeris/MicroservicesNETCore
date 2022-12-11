@@ -7,7 +7,6 @@ namespace Catalog.API.Repositories
         //GET Methods
         Task<IEnumerable<Product>> GetProducts();
         Task<Product> GetProduct(string id);
-        Task<IEnumerable<Product>> GetProductByName(string name);
         Task<IEnumerable<Product>> GetProductsByCategory(string categoryName);
 
         Task CreateProduct(Product product);

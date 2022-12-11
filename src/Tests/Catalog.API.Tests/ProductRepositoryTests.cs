@@ -22,7 +22,6 @@ namespace Catalog.API.Tests
         [TestMethod]
         public void CatalogContext_Constructor_Success()
         {
-
             //Act 
             var context = new CatalogContext(_configuration);
 
@@ -42,22 +41,6 @@ namespace Catalog.API.Tests
 
             //Assert 
             Assert.AreEqual(6, result.Count());
-        }
-
-        [TestMethod]
-        public async Task GetProductByName_Success()
-        {
-            //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
-            var result = await _repository.GetProductByName("IPhone X");
-
-            string productId = "602d2149e773f2a3990b47f5";
-
-            //Assert 
-            Assert.AreEqual(productId, result?.FirstOrDefault()?.Id);
         }
 
         [TestMethod]
@@ -121,6 +104,46 @@ namespace Catalog.API.Tests
             {
                 oldName = product.Name;
                 string newName = "IPhone XI";
+                product.Name = newName;
+
+                var result = await _repository.UpdateProduct(product);
+
+                //Assert
+                if (result)
+                {
+                    product = await _repository.GetProduct(productId);
+                    Assert.AreEqual(newName, product.Name);
+                }
+                else
+                {
+                    product = await _repository.GetProduct(productId);
+                    Assert.AreEqual(oldName, product.Name);
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public async Task UpdateProductToOldName_Success()
+        {
+            //Act 
+            var context = new CatalogContext(_configuration);
+
+            IProductRepository _repository = new ProductRepository(context);
+
+            string productId = "602d2149e773f2a3990b47f5";
+
+            var product = await _repository.GetProduct(productId);
+
+            string? oldName;
+
+            if (product != null)
+            {
+                oldName = product.Name;
+                string newName = "IPhone X";
                 product.Name = newName;
 
                 var result = await _repository.UpdateProduct(product);
