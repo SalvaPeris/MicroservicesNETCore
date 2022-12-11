@@ -62,6 +62,22 @@ namespace Catalog.API.Tests
         }
 
         [TestMethod]
+        public async Task GetProductByCategory_Success()
+        {
+            //Act 
+            var context = new CatalogContext(_configuration);
+
+            IProductRepository _repository = new ProductRepository(context);
+
+            string productCategory = "Smart Phone";
+
+            var result = await _repository.GetProductsByCategory(productCategory);
+
+            //Assert 
+            Assert.AreEqual(3, result.Count());
+        }
+
+        [TestMethod]
         public async Task CreateProduct_Success()
         {
             //Act 
@@ -108,55 +124,29 @@ namespace Catalog.API.Tests
 
                 var result = await _repository.UpdateProduct(product);
 
-                //Assert
-                if (result)
+                product = await _repository.GetProduct(productId);
+
+                //Restore product to old name
+                var product2 = new Product()
                 {
-                    product = await _repository.GetProduct(productId);
-                    Assert.AreEqual(newName, product.Name);
-                }
-                else
-                {
-                    product = await _repository.GetProduct(productId);
-                    Assert.AreEqual(oldName, product.Name);
-                }
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
+                    Id = product.Id,
+                    Name = "IPhone X",
+                    Summary = product.Summary,
+                    Description = product.Description,
+                    ImageFile = product.ImageFile,
+                    Category = product.Category,
+                    Price = product.Price
+                };
 
-        [TestMethod]
-        public async Task UpdateProductToOldName_Success()
-        {
-            //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
-            string productId = "602d2149e773f2a3990b47f5";
-
-            var product = await _repository.GetProduct(productId);
-
-            string? oldName;
-
-            if (product != null)
-            {
-                oldName = product.Name;
-                string newName = "IPhone X";
-                product.Name = newName;
-
-                var result = await _repository.UpdateProduct(product);
+                await _repository.UpdateProduct(product2);
 
                 //Assert
                 if (result)
                 {
-                    product = await _repository.GetProduct(productId);
                     Assert.AreEqual(newName, product.Name);
                 }
                 else
                 {
-                    product = await _repository.GetProduct(productId);
                     Assert.AreEqual(oldName, product.Name);
                 }
             }
