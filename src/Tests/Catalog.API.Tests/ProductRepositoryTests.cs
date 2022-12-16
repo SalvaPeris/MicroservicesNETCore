@@ -11,33 +11,23 @@ namespace Catalog.API.Tests
     public class ProductRepositoryTests
     {
 
-        private IConfiguration _configuration;
+        private IConfiguration? _configuration;
+        private CatalogContext? _context;
+        private IProductRepository? _repository;
 
         [TestInitialize]
         public void Setup()
         {
-            _configuration = TestConfiguration.getConfiguration();
-        }
-
-        [TestMethod]
-        public void CatalogContext_Constructor_Success()
-        {
-            //Act 
-            var context = new CatalogContext(_configuration);
-
-            //Assert 
-            Assert.IsNotNull(context);
+            _configuration = TestConfiguration.GetConfiguration();
+            _context = new CatalogContext(_configuration);
+            _repository = new ProductRepository(_context!);
         }
 
         [TestMethod]
         public async Task GetProductsAsync_Success()
         {
             //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
-            IEnumerable<Product> result = await _repository.GetProducts();
+            IEnumerable<Product> result = await _repository!.GetProducts();
 
             //Assert 
             Assert.AreEqual(6, result.Count());
@@ -47,14 +37,8 @@ namespace Catalog.API.Tests
         public async Task GetProductById_Success()
         {
             //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
             string productId = "602d2149e773f2a3990b47f5";
-
-            var result = await _repository.GetProduct(productId);
-
+            var result = await _repository!.GetProduct(productId);
             string productName = "IPhone X";
 
             //Assert 
@@ -65,13 +49,8 @@ namespace Catalog.API.Tests
         public async Task GetProductByCategory_Success()
         {
             //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
             string productCategory = "Smart Phone";
-
-            var result = await _repository.GetProductsByCategory(productCategory);
+            var result = await _repository!.GetProductsByCategory(productCategory);
 
             //Assert 
             Assert.AreEqual(3, result.Count());
@@ -81,10 +60,6 @@ namespace Catalog.API.Tests
         public async Task CreateProduct_Success()
         {
             //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
             Product newProduct = new()
             {
                 Name = "Test Mobile",
@@ -94,8 +69,7 @@ namespace Catalog.API.Tests
                 Price = 34
             };
 
-            await _repository.CreateProduct(newProduct);
-
+            await _repository!.CreateProduct(newProduct);
             IEnumerable<Product> resultCount = await _repository.GetProducts();
 
             //Assert 
@@ -106,14 +80,8 @@ namespace Catalog.API.Tests
         public async Task UpdateProduct_Success()
         {
             //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
             string productId = "602d2149e773f2a3990b47f5";
-
-            var product = await _repository.GetProduct(productId);
-
+            var product = await _repository!.GetProduct(productId);
             string? oldName;
 
             if (product != null)
@@ -123,7 +91,6 @@ namespace Catalog.API.Tests
                 product.Name = newName;
 
                 var result = await _repository.UpdateProduct(product);
-
                 product = await _repository.GetProduct(productId);
 
                 //Restore product to old name
@@ -160,14 +127,8 @@ namespace Catalog.API.Tests
         public async Task DeleteProduct_Success()
         {
             //Act 
-            var context = new CatalogContext(_configuration);
-
-            IProductRepository _repository = new ProductRepository(context);
-
-            IEnumerable<Product> products = await _repository.GetProducts();
-
-            var result = await _repository.DeleteProduct(products?.LastOrDefault().Id);
-
+            IEnumerable<Product> products = await _repository!.GetProducts();
+            await _repository.DeleteProduct(products?.LastOrDefault()!.Id!);
             IEnumerable<Product> resultCount = await _repository.GetProducts();
 
             //Assert 
