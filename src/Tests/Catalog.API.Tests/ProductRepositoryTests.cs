@@ -1,7 +1,6 @@
 using Catalog.API.Data;
 using Catalog.API.Entities;
 using Catalog.API.Repositories;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
