@@ -35,5 +35,34 @@ namespace Discount.API.Tests
             //Assert
             Assert.AreEqual(10, result.Amount);
         }
+
+        [TestMethod]
+        public async Task UpdateDiscountAsync_Success()
+        {
+            //Act
+            string productName = "iPhone X";
+            Coupon coupon = await _repository!.GetDiscount(productName);
+            //Update Amount from 10 to 20
+            coupon.Amount = 20;
+            await _repository!.UpdateDiscount(coupon);
+
+            Coupon result = await _repository.GetDiscount(productName);
+
+            //Assert
+            Assert.AreEqual(20, result.Amount);
+        }
+
+        [TestMethod]
+        public async Task RemoveDiscountAsync_Success()
+        {
+            string productName = "iPhone X";
+
+            //Act
+            await _repository!.DeleteDiscount(productName);
+            Coupon result = await _repository.GetDiscount(productName);
+
+            //Assert
+            Assert.AreEqual("No discount", result.ProductName);
+        }
     }
 }
