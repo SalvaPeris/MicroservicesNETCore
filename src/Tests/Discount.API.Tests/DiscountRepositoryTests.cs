@@ -24,23 +24,23 @@ namespace Discount.API.Tests
             //Act
             Coupon coupon = new()
             {
-                ProductName = "iPhone X",
-                Description = "Discount for iPhone X",
-                Amount = 10
+                ProductName = "iPhone XV",
+                Description = "Discount for iPhone XV",
+                Amount = 500
             };
             await _repository!.CreateDiscount(coupon);
 
             Coupon result = await _repository.GetDiscount(coupon.ProductName);
 
             //Assert
-            Assert.AreEqual(10, result.Amount);
+            Assert.AreEqual(500, result.Amount);
         }
 
         [TestMethod]
         public async Task UpdateDiscountAsync_Success()
         {
             //Act
-            string productName = "iPhone X";
+            string productName = "iPhone XV";
             Coupon coupon = await _repository!.GetDiscount(productName);
             //Update Amount from 10 to 20
             coupon.Amount = 20;
@@ -55,7 +55,7 @@ namespace Discount.API.Tests
         [TestMethod]
         public async Task RemoveDiscountAsync_Success()
         {
-            string productName = "iPhone X";
+            string productName = "iPhone XV";
 
             //Act
             await _repository!.DeleteDiscount(productName);
