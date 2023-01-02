@@ -1,6 +1,5 @@
 ﻿using Basket.API.Entities;
 using Basket.API.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -39,6 +38,8 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCart), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
         {
+            // TODO: Communicate with Dicount.Grpc and Calculate latest prices of product into shopping cart.
+
             return Ok(await _repository.UpdateBasket(basket));
         }
 
