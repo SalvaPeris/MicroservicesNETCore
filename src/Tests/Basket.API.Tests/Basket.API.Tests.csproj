@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\Basket\Basket.API\Basket.API.csproj" />
+    <ProjectReference Include="..\..\Services\Discount\Discount.Grpc\Discount.Grpc.csproj" />
   </ItemGroup>
 
 </Project>

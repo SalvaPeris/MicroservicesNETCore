@@ -1,8 +1,15 @@
-﻿using Basket.API.Entities;
+﻿using AutoMapper;
+using Basket.API.Entities;
+using Basket.API.GrpcServices;
 using Basket.API.Repository;
+using Discount.Grpc.Protos;
+using Discount.Grpc.Repositories;
+using Discount.Grpc.Services;
+using Grpc.Core;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Basket.API.Tests
@@ -12,6 +19,8 @@ namespace Basket.API.Tests
     {
         private IDistributedCache? _redisCache;
         private IBasketRepository? _repository;
+        private IDiscountRepository? _discountRepository;
+
 
         [TestInitialize]
         public void Setup()
@@ -23,10 +32,14 @@ namespace Basket.API.Tests
                  options.Configuration = _configuration.GetValue<string>("CacheSettings:ConnectionString");
              });
 
+            services.AddGrpc();
+
             var provider = services.BuildServiceProvider();
 
             _redisCache = provider.GetService<IDistributedCache>();
             _repository = new BasketRepository(_redisCache!);
+            var _discountConfiguration = TestConfiguration.GetDiscountConfiguration();
+            _discountRepository = new DiscountRepository(_discountConfiguration);
         }
 
         [TestMethod]
@@ -99,6 +112,12 @@ namespace Basket.API.Tests
             };
 
             var basket = await _repository!.UpdateBasket(newBasket);
+
+            foreach (var item in basket.Items)
+            {
+                var coupon = await _discountRepository!.GetDiscount(item.ProductName!);
+                item.Price -= coupon.Amount;
+            }
 
             //Assert 
             Assert.AreEqual(1, basket.Items.Count);

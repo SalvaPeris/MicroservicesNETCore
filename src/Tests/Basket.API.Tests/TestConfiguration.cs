@@ -12,5 +12,14 @@ namespace Basket.API.Tests
               .Build();
             return config;
         }
+
+        public static IConfiguration GetDiscountConfiguration()
+        {
+            var config = new ConfigurationBuilder()
+              .SetBasePath("C:\\Users\\speri\\source\\repos\\MicroservicesNETCore\\src\\Services\\Discount\\Discount.Grpc")
+              .AddJsonFile("appsettings.json")
+              .Build();
+            return config;
+        }
     }
 }
