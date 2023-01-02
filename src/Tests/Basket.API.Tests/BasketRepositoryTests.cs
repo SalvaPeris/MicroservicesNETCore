@@ -78,6 +78,34 @@ namespace Basket.API.Tests
         }
 
         [TestMethod]
+        public async Task UpdateBasketWithDiscountGrpcAsync_Success()
+        {
+            //Act 
+            ShoppingCart newBasket = new()
+            {
+                UserName = "testuser",
+                Items =
+                {
+                    new ShoppingCartItem()
+                    {
+                        Quantity = 1,
+                        Price = 1500,
+                        Color = "Red",
+                        Description = "Description mobile with discount of 150",
+                        ProductId = "602d2149e773f2a3990b47f6",
+                        ProductName = "IPhone X"
+                    }
+                }
+            };
+
+            var basket = await _repository!.UpdateBasket(newBasket);
+
+            //Assert 
+            Assert.AreEqual(1, basket.Items.Count);
+            Assert.AreEqual("testuser", basket.UserName);
+            Assert.AreEqual(1350, basket.TotalPrice);
+        }
+        [TestMethod]
         public async Task DeleteBasketAsync_Success()
         {
             //Act 
