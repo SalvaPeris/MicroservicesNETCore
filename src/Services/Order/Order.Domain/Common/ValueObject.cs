@@ -1,4 +1,4 @@
-﻿namespace Order.Domain.Common
+﻿namespace Ordering.Domain.Common
 {
     // Learn more: https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/implement-value-objects
     public abstract class ValueObject
