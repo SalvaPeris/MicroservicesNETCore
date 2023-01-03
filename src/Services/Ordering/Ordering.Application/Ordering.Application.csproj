@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Order.Domain\Ordering.Domain.csproj" />
+    <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
     <Folder Include="Behaviours\" />
+    <Folder Include="Contracts\NewFolder\" />
     <Folder Include="Features\Commands\" />
     <Folder Include="Features\Queries\" />
   </ItemGroup>
