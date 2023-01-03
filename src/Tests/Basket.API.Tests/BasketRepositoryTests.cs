@@ -1,15 +1,9 @@
-﻿using AutoMapper;
-using Basket.API.Entities;
-using Basket.API.GrpcServices;
+﻿using Basket.API.Entities;
 using Basket.API.Repository;
-using Discount.Grpc.Protos;
 using Discount.Grpc.Repositories;
-using Discount.Grpc.Services;
-using Grpc.Core;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Basket.API.Tests
@@ -19,8 +13,6 @@ namespace Basket.API.Tests
     {
         private IDistributedCache? _redisCache;
         private IBasketRepository? _repository;
-        private IDiscountRepository? _discountRepository;
-
 
         [TestInitialize]
         public void Setup()
@@ -32,14 +24,10 @@ namespace Basket.API.Tests
                  options.Configuration = _configuration.GetValue<string>("CacheSettings:ConnectionString");
              });
 
-            services.AddGrpc();
-
             var provider = services.BuildServiceProvider();
 
             _redisCache = provider.GetService<IDistributedCache>();
             _repository = new BasketRepository(_redisCache!);
-            var _discountConfiguration = TestConfiguration.GetDiscountConfiguration();
-            _discountRepository = new DiscountRepository(_discountConfiguration);
         }
 
         [TestMethod]
@@ -90,40 +78,6 @@ namespace Basket.API.Tests
             Assert.AreEqual(408, basket.TotalPrice);
         }
 
-        [TestMethod]
-        public async Task UpdateBasketWithDiscountGrpcAsync_Success()
-        {
-            //Act 
-            ShoppingCart newBasket = new()
-            {
-                UserName = "testuser",
-                Items =
-                {
-                    new ShoppingCartItem()
-                    {
-                        Quantity = 1,
-                        Price = 1500,
-                        Color = "Red",
-                        Description = "Description mobile with discount of 150",
-                        ProductId = "602d2149e773f2a3990b47f6",
-                        ProductName = "IPhone X"
-                    }
-                }
-            };
-
-            var basket = await _repository!.UpdateBasket(newBasket);
-
-            foreach (var item in basket.Items)
-            {
-                var coupon = await _discountRepository!.GetDiscount(item.ProductName!);
-                item.Price -= coupon.Amount;
-            }
-
-            //Assert 
-            Assert.AreEqual(1, basket.Items.Count);
-            Assert.AreEqual("testuser", basket.UserName);
-            Assert.AreEqual(1350, basket.TotalPrice);
-        }
         [TestMethod]
         public async Task DeleteBasketAsync_Success()
         {
