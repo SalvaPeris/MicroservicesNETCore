@@ -8,11 +8,11 @@ namespace Ordering.Application.Features.Orders.Commands.UpdateOrder
 {
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IMapper _mapper;
-        private readonly ILogger<UpdateOrderCommandHandler> _logger;
+        private readonly IOrderRepository? _orderRepository;
+        private readonly IMapper? _mapper;
+        private readonly ILogger<UpdateOrderCommandHandler>? _logger;
 
-        public UpdateOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, ILogger<UpdateOrderCommandHandler> logger)
+        public UpdateOrderCommandHandler(IOrderRepository? orderRepository, IMapper? mapper, ILogger<UpdateOrderCommandHandler>? logger)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
