@@ -26,7 +26,7 @@ namespace Ordering.Application.Features.Orders.Commands.UpdateOrder
             if (orderToUpdate == null)
             {
                 _logger.LogError("Order not exists in database");
-                //throw new NotFoundException(nameof(Order), request.Id);
+                throw new NotFoundException(nameof(Order), request.Id);
             }
 
             _mapper.Map(request, orderToUpdate, typeof(UpdateOrderCommand), typeof(Order));
