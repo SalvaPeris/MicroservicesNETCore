@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Behaviours\" />
+    <Folder Include="Features\Orders\Commands\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
