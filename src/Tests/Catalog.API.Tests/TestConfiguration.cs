@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Shared.Tests;
 
 namespace Catalog.API.Tests
 {
@@ -7,7 +8,7 @@ namespace Catalog.API.Tests
         public static IConfiguration GetConfiguration()
         {
             var config = new ConfigurationBuilder()
-              .SetBasePath("C:\\Users\\speri\\source\\repos\\MicroservicesNETCore\\src\\Services\\Catalog\\Catalog.API")
+              .SetBasePath(GlobalConstants.BasePath + "src\\Services\\Catalog\\Catalog.API")
               .AddJsonFile("appsettings.json")
               .Build();
             return config;

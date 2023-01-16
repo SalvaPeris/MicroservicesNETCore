@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Shared.Tests;
 
 namespace Basket.API.Tests
 {
@@ -7,7 +8,7 @@ namespace Basket.API.Tests
         public static IConfiguration GetConfiguration()
         {
             var config = new ConfigurationBuilder()
-              .SetBasePath("C:\\Users\\speri\\source\\repos\\MicroservicesNETCore\\src\\Services\\Basket\\Basket.API")
+              .SetBasePath(GlobalConstants.BasePath + "src\\Services\\Basket\\Basket.API")
               .AddJsonFile("appsettings.json")
               .Build();
             return config;

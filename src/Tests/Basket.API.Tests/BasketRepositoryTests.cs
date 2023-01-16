@@ -1,6 +1,5 @@
 ﻿using Basket.API.Entities;
 using Basket.API.Repository;
-using Discount.Grpc.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

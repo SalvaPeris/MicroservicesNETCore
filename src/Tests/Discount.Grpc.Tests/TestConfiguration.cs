@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Shared.Tests;
 
 namespace Discount.Grpc.Tests
 {
@@ -7,7 +8,7 @@ namespace Discount.Grpc.Tests
         public static IConfiguration GetConfiguration()
         {
             var config = new ConfigurationBuilder()
-              .SetBasePath("C:\\Users\\speri\\source\\repos\\MicroservicesNETCore\\src\\Services\\Discount\\Discount.Grpc")
+              .SetBasePath(GlobalConstants.BasePath + "src\\Services\\Discount\\Discount.Grpc")
               .AddJsonFile("appsettings.json")
               .Build();
             return config;
