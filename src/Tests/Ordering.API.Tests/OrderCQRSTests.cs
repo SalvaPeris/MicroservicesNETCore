@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Ordering.Application;
 using Ordering.Application.Contracts.Infrastructure;
 using Ordering.Application.Contracts.Persistence;
 using Ordering.Application.Features.Orders.Commands.CheckoutOrder;
@@ -12,8 +12,11 @@ using Ordering.Application.Features.Orders.Commands.DeleteOrder;
 using Ordering.Application.Features.Orders.Commands.UpdateOrder;
 using Ordering.Application.Features.Orders.Queries.GetOrdersList;
 using Ordering.Domain.Entities;
+using Ordering.Infrastructure;
 using Ordering.Infrastructure.Persistence;
 using Ordering.Infrastructure.Repositories;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ordering.API.Tests
 {
@@ -23,6 +26,7 @@ namespace Ordering.API.Tests
         private IMapper? _mapper;
         private OrderContext? _context;
         private IOrderRepository? _repository;
+        private IMediator? _mediator;
         string _userName = "Test";
         string _newUserName = "TestUpdated";
 
@@ -32,13 +36,14 @@ namespace Ordering.API.Tests
             var _configuration = TestConfiguration.GetConfiguration();
 
             var services = new ServiceCollection();
-            services.AddDbContext<OrderContext>(options =>
-            {
-                options.UseSqlServer(_configuration.GetConnectionString("OrderingConnectionString"));
-            });
+
+            services.AddApplicationServices();
+            services.AddInfrastructureServices(_configuration);
 
             var provider = services.BuildServiceProvider();
+
             _context = provider.GetService<OrderContext>();
+            _mediator = provider.GetService<IMediator>();
 
             _repository = new OrderRepository(_context!);
 
@@ -57,9 +62,7 @@ namespace Ordering.API.Tests
         public async Task GetOrderAsync_Success()
         {
             var query = new GetOrdersListQuery(_userName);
-            var handler = new GetOrdersListQueryHandler(_repository, _mapper);
-            var response = await handler.Handle(query, new CancellationToken());
-
+            var response = await _mediator!.Send(query);
             Assert.AreEqual(1, response.Count);
         }
 
@@ -68,16 +71,12 @@ namespace Ordering.API.Tests
         {
             var command = new CheckoutOrderCommand()
             {
-                UserName = _userName
+                UserName = _userName,
+                EmailAddress = "sperisgimeno@gmail.com",
+                TotalPrice = 500
             };
 
-            var logger = Mock.Of<ILogger<CheckoutOrderCommandHandler>>();
-            var emailService = Mock.Of<IEmailService>();
-
-            var handler = new CheckoutOrderCommandHandler(_repository!, _mapper!, emailService, logger);
-            var response = await handler.Handle(command, new CancellationToken());
-
-            var result = await GetOrderAsync(_userName);
+            var response = await _mediator!.Send(command);
 
             Assert.AreEqual(true, response > 0);
         }
@@ -89,15 +88,14 @@ namespace Ordering.API.Tests
             var command = new UpdateOrderCommand()
             {
                 Id = result.FirstOrDefault()!.Id,
-                UserName = _newUserName
+                UserName = _newUserName,
+                EmailAddress = result.FirstOrDefault()!.EmailAddress,
+                TotalPrice = result.FirstOrDefault()!.TotalPrice
             };
 
-            var logger = Mock.Of<ILogger<UpdateOrderCommandHandler>>();
-
-            var handler = new UpdateOrderCommandHandler(_repository!, _mapper!, logger);
-            var response = await handler.Handle(command, new CancellationToken());
-
+            var response = await _mediator!.Send(command);
             var resultFinal = await GetOrderAsync(_newUserName);
+
             Assert.AreEqual(1, resultFinal.Count);
         }
 
@@ -111,11 +109,7 @@ namespace Ordering.API.Tests
                 Id = result.FirstOrDefault()!.Id
             };
 
-            var logger = Mock.Of<ILogger<DeleteOrderCommandHandler>>();
-
-            var handler = new DeleteOrderCommandHandler(_repository!, _mapper!, logger);
-            await handler.Handle(command, new CancellationToken());
-
+            await _mediator!.Send(command);
             var response = await GetOrderAsync(_newUserName);
 
             Assert.AreEqual(0, response.Count);
@@ -124,8 +118,8 @@ namespace Ordering.API.Tests
         private async Task<List<OrderVM>> GetOrderAsync(string userName)
         {
             var query = new GetOrdersListQuery(userName);
-            var handler = new GetOrdersListQueryHandler(_repository, _mapper);
-            return await handler.Handle(query, new CancellationToken());
+            var response = await _mediator!.Send(query);
+            return response;
         }
 
     }
