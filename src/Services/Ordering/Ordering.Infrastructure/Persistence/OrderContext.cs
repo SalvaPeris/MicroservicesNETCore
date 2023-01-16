@@ -6,6 +6,10 @@ namespace Ordering.Infrastructure.Persistence
 {
     public class OrderContext : DbContext
     {
+        public OrderContext()
+        {
+        }
+
         public OrderContext(DbContextOptions<OrderContext> options) : base(options)
         {
         }
@@ -20,11 +24,11 @@ namespace Ordering.Infrastructure.Persistence
                 {
                     case EntityState.Added:
                         entry.Entity.CreatedDate = DateTime.Now;
-                        entry.Entity.CreatedBy = "swn";
+                        entry.Entity.CreatedBy = "spg";
                         break;
                     case EntityState.Modified:
                         entry.Entity.LastModifiedDate = DateTime.Now;
-                        entry.Entity.LastModifiedBy = "swn";
+                        entry.Entity.LastModifiedBy = "spg";
                         break;
                 }
             }

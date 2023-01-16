@@ -26,7 +26,8 @@ namespace Ordering.Infrastructure.Persistence
                     LastName = "Peris",
                     EmailAddress = "sperisgimeno@gmail.com",
                     AddressLine = "Albal",
-                    Country = "Spain"
+                    Country = "Spain",
+                    TotalPrice = 350
                 }
             };
         }
