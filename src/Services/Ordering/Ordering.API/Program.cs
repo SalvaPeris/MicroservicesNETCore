@@ -27,6 +27,7 @@ app.MapControllers();
 
 app.MigrateDatabase<OrderContext>((context, service) =>
 {
+    //These lines are an action parameter, in MigrationDatabase > seeder will execute SeedAsync.
     var logger = app.Services.GetService<ILogger<OrderContextSeed>>();
     OrderContextSeed.SeedAsync(context, logger!).Wait();
 });
