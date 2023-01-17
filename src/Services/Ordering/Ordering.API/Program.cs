@@ -1,3 +1,4 @@
+using MassTransit;
 using Ordering.API.Extensions;
 using Ordering.Application;
 using Ordering.Infrastructure;
@@ -7,6 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+#region MassTransit / RabbitMQ Configuration
+builder.Services.AddMassTransit(configuration =>
+{
+    configuration.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+    });
+});
+
+//New version no longer requieres the AddMassTransitHostedService method -> https://stackoverflow.com/questions/72403579/workerservice-configure-a-rabbitmq-with-masstransit
+//builder.Services.AddMassTransitHostedService();
+
+#endregion
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

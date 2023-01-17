@@ -33,10 +33,11 @@ builder.Services.AddMassTransit(configuration =>
         configurator.Host(builder.Configuration["EventBusSettings:HostAddress"]);
     });
 });
-#endregion
 
-//New version no longer requieres the AddMassTransitHostedService -> https://stackoverflow.com/questions/72403579/workerservice-configure-a-rabbitmq-with-masstransit
+//New version no longer requieres the AddMassTransitHostedService method -> https://stackoverflow.com/questions/72403579/workerservice-configure-a-rabbitmq-with-masstransit
 //builder.Services.AddMassTransitHostedService();
+
+#endregion
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
