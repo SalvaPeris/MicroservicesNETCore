@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared.Tests\Shared.Tests.csproj" />
     <ProjectReference Include="..\..\Services\Discount\Discount.API\Discount.API.csproj" />
+    <ProjectReference Include="..\Shared.Tests\Shared.Tests.csproj" />
   </ItemGroup>
 
 </Project>
