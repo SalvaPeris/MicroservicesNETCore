@@ -1,4 +1,3 @@
-
 using Basket.API.GrpcServices;
 using Basket.API.Repository;
 using Discount.Grpc.Protos;
@@ -6,20 +5,25 @@ using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+#region Redis Configuration
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
 });
+#endregion
 
+#region General Configuration
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+#endregion
+
+#region GRPC Configuration
 builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
         options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"])
     );
 builder.Services.AddScoped<IDiscountGrpcService, DiscountGrpcService>();
+#endregion
 
-// MassTransit / RabbitMQ Configuration
+#region MassTransit / RabbitMQ Configuration
 builder.Services.AddMassTransit(configuration =>
 {
     configuration.UsingRabbitMq((context, configurator) =>
@@ -27,6 +31,7 @@ builder.Services.AddMassTransit(configuration =>
         configurator.Host(builder.Configuration["EventBusSettings:HostAddress"]);
     });
 });
+#endregion
 
 //New version no longer requieres the AddMassTransitHostedService -> https://stackoverflow.com/questions/72403579/workerservice-configure-a-rabbitmq-with-masstransit
 //builder.Services.AddMassTransitHostedService();
