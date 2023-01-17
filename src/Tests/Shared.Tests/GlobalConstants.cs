@@ -2,6 +2,6 @@
 {
     public static class GlobalConstants
     {
-        public static string BasePath = "C:\\\\Users\\\\salvap\\\\source\\\\repos\\\\MicroservicesNETCore\\";
+        public const string BasePath = "C:\\\\Users\\\\salvap\\\\source\\\\repos\\\\MicroservicesNETCore\\";
     }
 }
