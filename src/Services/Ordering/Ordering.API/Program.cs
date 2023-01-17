@@ -1,16 +1,14 @@
 using EventBus.Messages.Common;
-using EventBus.Messages.Events;
 using MassTransit;
 using Ordering.API.EventBusConsumer;
 using Ordering.API.Extensions;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Persistence;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices(builder.Configuration);
 
 #region MassTransit / RabbitMQ Configuration
 builder.Services.AddMassTransit(configuration =>
@@ -30,6 +28,17 @@ builder.Services.AddMassTransit(configuration =>
 
 //New version no longer requieres the AddMassTransitHostedService method -> https://stackoverflow.com/questions/72403579/workerservice-configure-a-rabbitmq-with-masstransit
 //builder.Services.AddMassTransitHostedService();
+
+#endregion
+
+
+#region General Configuration
+
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<BasketCheckoutConsumer>();
 
 #endregion
 
