@@ -1,6 +1,9 @@
 # eShop with Microservices
-UNDER DEVELOPMENT
 eShop done with microservices with NET Core.
+
+(UNDER DEVELOPMENT)
+
+
 
 ## Catalog.API
 Microservice created to populate Catalog by API RESTful.
