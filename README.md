@@ -21,5 +21,5 @@ Database used: PostgreSQL
 Microservice for ordering. Basket.API send a message into RabbitMQ queue and Ordering.API consumes this message and inserts in database.
 Database used: SQL Server.
 
-##Ocelot API Gateway
+## Ocelot API Gateway
 Gateway for routing from one microservice.
