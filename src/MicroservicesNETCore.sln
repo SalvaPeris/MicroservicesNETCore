@@ -51,7 +51,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "Buildi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIGateways", "APIGateways", "{CA90E035-820A-40D6-B54D-690AE833C5FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotAPIGateway", "APIGateways\OcelotAPIGateways\OcelotAPIGateway\OcelotAPIGateway.csproj", "{F0723411-58FC-4062-97F2-FECD3B0A9DE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotAPIGateway", "APIGateways\OcelotAPIGateways\OcelotAPIGateway\OcelotAPIGateway.csproj", "{F0723411-58FC-4062-97F2-FECD3B0A9DE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopping.Aggregator", "APIGateways\Shopping.Aggregator\Shopping.Aggregator.csproj", "{9732A961-6ECF-4677-A172-9979371DB134}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{F0723411-58FC-4062-97F2-FECD3B0A9DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0723411-58FC-4062-97F2-FECD3B0A9DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0723411-58FC-4062-97F2-FECD3B0A9DE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9732A961-6ECF-4677-A172-9979371DB134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9732A961-6ECF-4677-A172-9979371DB134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9732A961-6ECF-4677-A172-9979371DB134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9732A961-6ECF-4677-A172-9979371DB134}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,6 +158,7 @@ Global
 		{7BE4FF0A-CEFC-4614-9BBF-BCA262E243BD} = {5373C790-CE8E-4DA4-A20C-A263875D5DE9}
 		{5CE87BCE-DDA5-43E5-B859-7C234B81446E} = {1A6B0880-C3E6-4C7F-84BD-40068E75CA43}
 		{F0723411-58FC-4062-97F2-FECD3B0A9DE9} = {CA90E035-820A-40D6-B54D-690AE833C5FA}
+		{9732A961-6ECF-4677-A172-9979371DB134} = {CA90E035-820A-40D6-B54D-690AE833C5FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4E4B89D-1736-4F86-9C32-ECD7417DDE26}
