@@ -2,6 +2,8 @@
 eShop done with microservices with NET Core and Aggregator pattern.
 
 
+
+
 ## Catalog.API
 ASP.NET Core Web API application
 REST API principles, CRUD operations
